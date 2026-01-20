@@ -7,7 +7,7 @@ import { audioEngine } from './services/audioEngine';
 import Grid from './components/Grid';
 import ControlPanel from './components/ControlPanel';
 import MidiMonitor from './components/MidiMonitor';
-import { Palette, ChevronDown, ChevronUp } from 'lucide-react';
+import { Palette, ChevronDown, ChevronUp, Download } from 'lucide-react';
 
 function App() {
   // State
@@ -25,6 +25,7 @@ function App() {
   // Theme State
   const [currentTheme, setCurrentTheme] = useState<Theme>(THEME_PRESETS[0]);
   const [showMidiMonitor, setShowMidiMonitor] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
 
   // Synth Params
   const [synthParams, setSynthParams] = useState<SynthParams>({
@@ -57,6 +58,17 @@ function App() {
       // Tone.js requires user gesture usually, initialized on Play
     };
     init();
+
+    // PWA Install Prompt
+    const handleBeforeInstallPrompt = (e: any) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
   }, []);
 
   // Update Synth Params real-time
@@ -170,6 +182,15 @@ function App() {
     setSteps(DEFAULT_STEPS.map(s => ({ ...s, active: false, slide: false, accent: false })));
   };
 
+  const handleInstallClick = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      setDeferredPrompt(null);
+    }
+  };
+
   return (
     <div
       className="flex flex-col min-h-screen overflow-y-auto transition-colors duration-300"
@@ -185,6 +206,17 @@ function App() {
         </h1>
 
         <div className="flex items-center gap-4">
+          {/* Install Button */}
+          {deferredPrompt && (
+            <button
+              onClick={handleInstallClick}
+              className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold transition-all hover:scale-105 active:scale-95 animate-pulse"
+              style={{ backgroundColor: currentTheme.primary, color: currentTheme.background }}
+            >
+              <Download size={16} /> Install
+            </button>
+          )}
+
           {/* Theme Selector */}
           <div className="flex items-center gap-2">
             <Palette size={16} style={{ color: currentTheme.textMuted }} />
@@ -205,7 +237,7 @@ function App() {
           </div>
 
           <div className="text-xs font-mono" style={{ color: currentTheme.textMuted }}>
-            v2.0.0 | Acid Sequencer
+            v2.1.0 | Acid Sequencer
           </div>
         </div>
       </header>
