@@ -1,33 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>music-zai</title>
-    <meta name="description" content="Acid Bassline MIDI Sequencer" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-      body {
-        background-color: #09090b; /* Zinc 950 */
-        color: #e4e4e7; /* Zinc 200 */
-        font-family: 'Inter', sans-serif;
-      }
-      /* Custom scrollbar for log */
-      ::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #18181b; 
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #3f3f46; 
-        border-radius: 4px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #52525b; 
-      }
-    </style>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>music-zai</title>
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%2309090b%22/><path d=%22M20 50 L80 50 L80 80 L20 80 Z%22 fill=%22%2310b981%22/><path d=%22M30 30 L40 30 L40 50 L30 50 Z%22 fill=%22%23e4e4e7%22/><path d=%22M50 20 L60 20 L60 50 L50 50 Z%22 fill=%22%23e4e4e7%22/><path d=%22M70 30 L80 30 L80 50 L70 50 Z%22 fill=%22%23e4e4e7%22/></svg>">
+  <meta name="description" content="Acid Bassline MIDI Sequencer" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-color: #09090b;
+      /* Zinc 950 */
+      color: #e4e4e7;
+      /* Zinc 200 */
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Custom scrollbar for log */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #18181b;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #3f3f46;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #52525b;
+    }
+  </style>
   <script type="importmap">
 {
   "imports": {
@@ -40,10 +49,12 @@
   }
 }
 </script>
-<link rel="stylesheet" href="/index.css">
+  <link rel="stylesheet" href="/index.css">
 </head>
-  <body>
-    <div id="root"></div>
+
+<body>
+  <div id="root"></div>
   <script type="module" src="/index.tsx"></script>
 </body>
+
 </html>
