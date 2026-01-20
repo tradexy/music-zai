@@ -1,0 +1,5 @@
+{
+  "name": "music-zai",
+  "description": "A professional 16-step x 12-pitch MIDI sequencer for Acid basslines with slide logic and hardware integration.",
+  "requestFramePermissions": []
+}
