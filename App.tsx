@@ -172,6 +172,69 @@ function App() {
     }
   };
 
+  // Keyboard Shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore if user is typing in an input
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLSelectElement || e.target instanceof HTMLTextAreaElement) {
+        return;
+      }
+
+      const key = e.key.toLowerCase();
+      const step = 20; // Default step for values
+      const cutoffStep = 100;
+      const decayStep = 0.05;
+      const distortionStep = 0.05;
+
+      switch (key) {
+        case ' ':
+        case 'p':
+          e.preventDefault();
+          handleTogglePlay();
+          break;
+        case 'q':
+          setTempo(prev => Math.min(180, prev + 2));
+          break;
+        case 'a':
+          setTempo(prev => Math.max(60, prev - 2));
+          break;
+        case 'w':
+          setSynthParams(prev => ({ ...prev, cutoff: Math.min(5000, prev.cutoff + cutoffStep) }));
+          break;
+        case 's':
+          setSynthParams(prev => ({ ...prev, cutoff: Math.max(50, prev.cutoff - cutoffStep) }));
+          break;
+        case 'e':
+          setSynthParams(prev => ({ ...prev, resonance: Math.min(20, prev.resonance + 1) }));
+          break;
+        case 'd':
+          setSynthParams(prev => ({ ...prev, resonance: Math.max(0, prev.resonance - 1) }));
+          break;
+        case 'r':
+          setSynthParams(prev => ({ ...prev, decay: Math.min(2.0, prev.decay + decayStep) }));
+          break;
+        case 'f':
+          setSynthParams(prev => ({ ...prev, decay: Math.max(0.1, prev.decay - decayStep) }));
+          break;
+        case 't':
+          setSynthParams(prev => ({ ...prev, distortion: Math.min(1, prev.distortion + distortionStep) }));
+          break;
+        case 'g':
+          setSynthParams(prev => ({ ...prev, distortion: Math.max(0, prev.distortion - distortionStep) }));
+          break;
+        case 'i':
+          setSynthParams(prev => ({ ...prev, waveform: WaveformType.SAWTOOTH }));
+          break;
+        case 'o':
+          setSynthParams(prev => ({ ...prev, waveform: WaveformType.SQUARE }));
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleTogglePlay]);
+
   const handleStepChange = (index: number, data: StepData) => {
     const newSteps = [...steps];
     newSteps[index] = data;
@@ -236,8 +299,12 @@ function App() {
             </select>
           </div>
 
+          <div className="hidden sm:flex items-center gap-2 px-3 py-1 border rounded-md text-[10px] font-mono opacity-60" style={{ borderColor: currentTheme.border }}>
+            <span className="font-bold">Keys:</span> [P] Play | [Q/A] BPM | [W/S] Cut | [E/D] Res | [R/F] Dec | [T/G] Dist | [I/O] Wave
+          </div>
+
           <div className="text-xs font-mono" style={{ color: currentTheme.textMuted }}>
-            v2.1.0 | Acid Sequencer
+            v2.2.0 | Acid Sequencer
           </div>
         </div>
       </header>
